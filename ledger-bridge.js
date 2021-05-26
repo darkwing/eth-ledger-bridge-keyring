@@ -10,8 +10,8 @@ import WebSocketTransport from '@ledgerhq/hw-transport-http/lib/WebSocketTranspo
 const BRIDGE_URL = 'ws://localhost:8435'
 
 // Number of seconds to poll for Ledger Live and Ethereum app opening
-const TRANSPORT_CHECK_LIMIT = 180
-const TRANSPORT_CHECK_DELAY = 1000
+const TRANSPORT_CHECK_LIMIT = 30
+const TRANSPORT_CHECK_DELAY = 5000
 
 export default class LedgerBridge {
     constructor () {
