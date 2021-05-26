@@ -5,6 +5,7 @@ import TransportU2F from '@ledgerhq/hw-transport-u2f'
 import LedgerEth from '@ledgerhq/hw-app-eth'
 import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20'
 import WebSocketTransport from '@ledgerhq/hw-transport-http/lib/WebSocketTransport'
+import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 
 // URL which triggers Ledger Live app to open and handle communication
 const BRIDGE_URL = 'ws://localhost:8435'
@@ -66,13 +67,15 @@ export default class LedgerBridge {
 
     async makeApp () {
         try {
-            if (this.useLedgerLive) {
-                await WebSocketTransport.check(BRIDGE_URL, TRANSPORT_CHECK_DELAY).catch(async () => {
-                    window.open('ledgerlive://bridge?appName=Ethereum')
-                    await this.checkTransportLoop()
-                    this.transport = await WebSocketTransport.open(BRIDGE_URL)
+            if (true) {
+                try {
+                    const transport = await TransportWebUSB.create()
                     this.app = new LedgerEth(this.transport)
-                })
+                }
+                catch (e) {
+                    console.log('Web USB error! ', e);
+                    throw e;
+                }
             }
             else {
                 this.transport = await TransportU2F.create()
